@@ -34,6 +34,14 @@ class App extends Component {
     })
   }
 
+  deletePersonHandler = personIdx => {
+    // const persons = this.state.persons.slice()
+    // create copy of persons state
+    const persons = [...this.state.persons]
+    persons.splice(personIdx, 1)
+    this.setState({ persons: persons })
+  }
+
   togglePersonsHandler = () => {
     this.setState({ showPersons: !this.state.showPersons })
   }
@@ -52,7 +60,17 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
+          {this.state.persons.map((person, idx) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(idx)}
+                key={idx}
+                name={person.name}
+                age={person.age}
+              />
+            )
+          })}
+          {/* <Person
             name={this.state.persons[0].name}
             age={this.state.persons[0].age}
             // this form of binding is slightly more resoruce efficient
@@ -68,7 +86,7 @@ class App extends Component {
           <Person
             name={this.state.persons[2].name}
             age={this.state.persons[2].age}
-          />
+          /> */}
         </div>
       )
     }
