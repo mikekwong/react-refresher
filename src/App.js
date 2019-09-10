@@ -5,9 +5,9 @@ import Person from './Person/Person'
 class App extends Component {
   state = {
     persons: [
-      { name: 'Max', age: 28 },
-      { name: 'Emily', age: 20 },
-      { name: 'John', age: 15 },
+      { id: '23423fa', name: 'Max', age: 28 },
+      { id: 'aksdf8', name: 'Emily', age: 20 },
+      { id: '823fa', name: 'John', age: 15 },
     ],
     otherState: 'some value',
     showPersons: false,
@@ -24,13 +24,23 @@ class App extends Component {
     })
   }
 
-  onChangeHandler = e => {
+  nameChangedHandler = (e, id) => {
+    const personIdx = this.state.persons.findIndex(person => {
+      return person.id === id
+    })
+    // more modern approach to make shallow copy of object
+    const person = {
+      ...this.state.persons[personIdx],
+    }
+    // const person = Object.assign({}, this.state.person[personIdx])
+
+    person.name = e.target.value
+
+    const persons = [...this.state.persons]
+    persons[personIdx] = person
+
     this.setState({
-      persons: [
-        { name: 'Max', age: 28 },
-        { name: e.target.value, age: 15 },
-        { name: 'John', age: 15 },
-      ],
+      persons: persons,
     })
   }
 
@@ -64,9 +74,10 @@ class App extends Component {
             return (
               <Person
                 click={() => this.deletePersonHandler(idx)}
-                key={idx}
+                key={person.id}
                 name={person.name}
                 age={person.age}
+                changed={e => this.nameChangedHandler(e, person.id)}
               />
             )
           })}
@@ -81,7 +92,7 @@ class App extends Component {
           <Person
             name={this.state.persons[1].name}
             age={this.state.persons[1].age}
-            changed={this.onChangeHandler}
+            changed={this.nameChangedHandler}
           />
           <Person
             name={this.state.persons[2].name}
