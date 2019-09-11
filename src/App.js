@@ -58,7 +58,8 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'gray',
+      backgroundColor: 'green',
+      color: '#FFF',
       font: 'inherit',
       border: '1px solid blue',
       padding: '8px',
@@ -81,31 +82,25 @@ class App extends Component {
               />
             )
           })}
-          {/* <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-            // this form of binding is slightly more resoruce efficient
-            click={this.handleClick.bind(this, 'oops')}
-          >
-            My hobbies: Racing
-          </Person>
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            changed={this.nameChangedHandler}
-          />
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}
-          /> */}
         </div>
       )
+      // if showPersons state is true, make background 'red' for toggle
+      style.backgroundColor = 'red'
+    }
+    // Using an array to assign classNames by conditions
+    // let classes = ['red', 'bold'].join(' ') //'red bold'
+    const classes = []
+    if (this.state.persons.length <= 2) {
+      classes.push('red') // classes = ['red]
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold') //classes = ['red', 'bold']
     }
 
     return (
       <div className="App">
         <h1>I'm a react app</h1>
-        <p>This is really working</p>
+        <p className={classes.join(' ')}>This is really working</p>
         <button
           style={style}
           onClick={() => this.togglePersonsHandler('Maximil')}
