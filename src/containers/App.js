@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import './App.css'
-import Person from './Person/Person'
+import Persons from '../components/Persons/Persons'
+import Cockpit from '../Cockpit/Cockpit'
 
 class App extends Component {
+  // constructor(props) {
+  //   super(props)
+  //   console.log('[App.js] constructor')
+  // }
   state = {
     persons: [
       { id: '23423fa', name: 'Max', age: 28 },
@@ -11,6 +16,7 @@ class App extends Component {
     ],
     otherState: 'some value',
     showPersons: false,
+    showCockpit: true,
   }
 
   handleClick = newName => {
@@ -22,6 +28,25 @@ class App extends Component {
       ],
       otherState: 'some value',
     })
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props)
+    return state
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount')
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate')
+    // to always allow update (true is default is this lifecycle method is not used)
+    return true
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate')
   }
 
   nameChangedHandler = (e, id) => {
@@ -57,56 +82,36 @@ class App extends Component {
   }
 
   render() {
-    const style = {
-      backgroundColor: 'green',
-      color: '#FFF',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
-    }
-
+    console.log('[App.js] render')
     let persons = null
 
     if (this.state.showPersons) {
       persons = (
-        <div>
-          {this.state.persons.map((person, idx) => {
-            return (
-              <Person
-                click={() => this.deletePersonHandler(idx)}
-                key={person.id}
-                name={person.name}
-                age={person.age}
-                changed={e => this.nameChangedHandler(e, person.id)}
-              />
-            )
-          })}
-        </div>
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangedHandler}
+        />
       )
-      // if showPersons state is true, make background 'red' for toggle
-      style.backgroundColor = 'red'
-    }
-    // Using an array to assign classNames by conditions
-    // let classes = ['red', 'bold'].join(' ') //'red bold'
-    const classes = []
-    if (this.state.persons.length <= 2) {
-      classes.push('red') // classes = ['red]
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push('bold') //classes = ['red', 'bold']
     }
 
     return (
       <div className="App">
-        <h1>I'm a react app</h1>
-        <p className={classes.join(' ')}>This is really working</p>
         <button
-          style={style}
-          onClick={() => this.togglePersonsHandler('Maximil')}
+          onClick={() => {
+            this.setState({ showCockpit: false })
+          }}
         >
-          Toggle Persons
+          Remove Cockpit
         </button>
+        {this.state.showCockpit && (
+          <Cockpit
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+            toggle={this.togglePersonsHandler}
+          />
+        )}
+
         {persons}
       </div>
     )
