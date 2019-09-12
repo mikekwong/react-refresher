@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Persons from '../components/Persons/Persons'
 import Cockpit from '../Cockpit/Cockpit'
+// import Aux from '../components/hoc/Aux'
 
 class App extends Component {
   // constructor(props) {
@@ -17,6 +18,7 @@ class App extends Component {
     otherState: 'some value',
     showPersons: false,
     showCockpit: true,
+    changeCounter: 0,
   }
 
   handleClick = newName => {
@@ -64,8 +66,11 @@ class App extends Component {
     const persons = [...this.state.persons]
     persons[personIdx] = person
 
-    this.setState({
-      persons: persons,
+    this.setState(prevState => {
+      return {
+        persons: persons,
+        changeCounter: prevState.changeCounter + 1,
+      }
     })
   }
 
@@ -107,7 +112,7 @@ class App extends Component {
         {this.state.showCockpit && (
           <Cockpit
             showPersons={this.state.showPersons}
-            persons={this.state.persons}
+            personsLength={this.state.persons.length}
             toggle={this.togglePersonsHandler}
           />
         )}

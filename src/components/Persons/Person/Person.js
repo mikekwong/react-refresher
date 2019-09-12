@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import './Person.css'
+import Aux from '../../hoc/Aux'
+import classes from './Person.css'
+import withClass from '../../hoc/withClass'
 
-export default class Person extends Component {
+class Person extends Component {
   render() {
     console.log('[Person.js] rendering..')
     return (
       <div className="person">
+        {/* <Aux> */}
         <p onClick={this.props.click}>
           I'm {this.props.name} and {this.props.age} years old
         </p>
@@ -15,7 +18,10 @@ export default class Person extends Component {
           onChange={this.props.changed}
           value={this.props.name}
         />
+        {/* </Aux> */}
       </div>
     )
   }
 }
+
+export default withClass(Person, classes.person)

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import './Cockpit.css'
 
-export default props => {
+const Cockpit = props => {
   useEffect(() => {
     console.log('[Cockpit.js] useEffect')
     // Http request...
     setTimeout(() => {
       alert('Saved data to cloud')
     }, 1000)
-    // for unmounting
+    // for Unmounting, you can return a function with anything you wante cleaned up
     return () => {
       console.log('[Cockpit.js] cleanup work in useEffect')
     }
@@ -34,10 +34,10 @@ export default props => {
   // Using an array to assign classNames by conditions
   // let classes = ['red', 'bold'].join(' ') //'red bold'
   const classes = []
-  if (props.persons.length <= 2) {
+  if (props.personsLength <= 2) {
     classes.push('red') // classes = ['red]
   }
-  if (props.persons.length <= 1) {
+  if (props.personsLength <= 1) {
     classes.push('bold') //classes = ['red', 'bold']
   }
   if (props.showPersons) {
@@ -55,3 +55,5 @@ export default props => {
     </div>
   )
 }
+
+export default React.memo(Cockpit)
